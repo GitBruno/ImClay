@@ -165,6 +165,34 @@ static inline void Clay__SuppressUnusedLatchDefinitionVariableWarning(void) { (v
 
 #define CLAY__INIT(type) type
 
+// ofxImGuiClay / ImClay vendored patch (Clay 0.14): C++ macros use positional aggregate init.
+// Designated initializers inside macros break on some Windows/MinGW toolchains.
+#undef CLAY_STRING
+#define CLAY_STRING(clay_literal) \
+    Clay_String { true, CLAY__STRING_LENGTH(CLAY__ENSURE_STRING_LITERAL(clay_literal)), (const char *)(clay_literal) }
+
+#undef CLAY_CORNER_RADIUS
+#define CLAY_CORNER_RADIUS(radius) Clay_CornerRadius { (radius), (radius), (radius), (radius) }
+
+#undef CLAY_SIZING_FIT
+#define CLAY_SIZING_FIT(...) Clay_SizingAxis { { { __VA_ARGS__ } }, CLAY__SIZING_TYPE_FIT }
+
+#undef CLAY_SIZING_GROW
+#define CLAY_SIZING_GROW(...) Clay_SizingAxis { { { __VA_ARGS__ } }, CLAY__SIZING_TYPE_GROW }
+
+#undef CLAY_SIZING_FIXED
+#define CLAY_SIZING_FIXED(fixedSize) Clay_SizingAxis { { { (fixedSize), (fixedSize) } }, CLAY__SIZING_TYPE_FIXED }
+
+#undef CLAY_SIZING_PERCENT
+#define CLAY_SIZING_PERCENT(percentOfParent) \
+    ({ Clay_SizingAxis _clay_axis = Clay_SizingAxis {}; \
+       _clay_axis.size.percent = (percentOfParent); \
+       _clay_axis.type = CLAY__SIZING_TYPE_PERCENT; \
+       _clay_axis; })
+
+#undef CLAY__CONFIG_WRAPPER
+#define CLAY__CONFIG_WRAPPER(type, ...) (CLAY__WRAPPER_TYPE(type) { __VA_ARGS__ }.wrapped)
+
 #define CLAY_PACKED_ENUM enum : uint8_t
 
 #define CLAY__DEFAULT_STRUCT {}
