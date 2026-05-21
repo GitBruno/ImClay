@@ -2,6 +2,8 @@
 
 Clay flex layout rendered into **Dear ImGui** `ImDrawList`.
 
+![preview](preview.png)
+
 | Layer | Role |
 |-------|------|
 | [Clay](https://github.com/nicbarker/clay) (`libs/clay/clay.h`) | Layout (flex, scroll, grow/fixed) |
@@ -15,28 +17,6 @@ include/ImClay/     Public API
 src/ImClay.cpp      Clay → ImDrawList renderer
 libs/clay/          Vendored Clay header
 ```
-
-## openFrameworks
-
-The dockable Mondrian demo, Emscripten build, and GitHub Pages workflow live in **[ofxImGuiClay](https://github.com/ofKitty/openFrameworks/tree/master/addons/ofxImGuiClay)** (`example-dock` and future `example-site`).
-
-```bash
-cd addons/ofxImGuiClay/example-dock
-make
-```
-
-Requires **ofxImGui** and docking-enabled ImGui.
-
-## CMake (library only)
-
-For non-OF consumers. Fetches ImGui (docking branch) and builds static `ImClay` + `imgui_core`.
-
-```bash
-cmake -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build
-```
-
-Link `ImClay` and `imgui_core`, provide your own ImGui backend and main loop.
 
 ## Usage
 
